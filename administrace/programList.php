@@ -11,7 +11,7 @@
     $result5 = MySQLDb::queryString($query5);
     -->
     <table>
-        <tr><td>datu a čas promítání </td> <td> název filmu </td> <td> číslo sálu </td> <td> cena lístku </td> <td> druh sálu </td> <td> 2D/3D </td></tr>
+        <tr><td>datum a čas promítání </td> <td> název filmu </td> <td> číslo sálu </td> <td> cena lístku </td> <td> druh sálu </td> <td> 2D/3D </td></tr>
         <?php //while ($row5 = mysqli_fetch_assoc($result5)) { 
          $promitani = Model::getProgram();
                 foreach ($promitani as $row5) {
@@ -30,20 +30,9 @@
                     
                 
                 $datumPredprodeje = new DateTime($row5['datumcas']);
-                if (isset($_SESSION["email"])) {
-                    if ($now <= $datumPredprodeje) {
-                        ?>
-                        <td><a href="order.php?id_programu=<?php echo $row5["id_programu"] ?> "> objednat</a> <br></td>
-                        <?php } else {
-                        ?>
-                        <td> předprodej skončil </td>
-                    <?php
-                    }
-                } else { ?>
-                    <td>Pro objednání se musíte přihlásit</td>    
-               <?php }
                 ?>
                     <td><button><a href="smazani.php?id_programu=<?php echo $row5["id_programu"] ?> " style="color:black;">Smazat</a></button></td>
+                    <td><button><a href="programDetail.php?id_programu=<?php echo $row5["id_programu"] ?> " style="color:black;">Upravit</a></button></td>
             </tr>
             <br>
 <?php }

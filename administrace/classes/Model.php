@@ -171,4 +171,56 @@ class Model {
         return $result;
     }
     
+    public function getProgramU($id_programu) {
+        $query = "SELECT * FROM `program` WHERE `id_programu` = '$id_programu';";
+        $result = MySQLDb::queryString($query);
+        $row = mysqli_fetch_assoc($result);
+        return $row;
+    }
+    
+    public function getFilm($id_filmu) {
+        $query = "SELECT * FROM `filmy` WHERE `id_filmu` = '$id_filmu';";
+        $result = MySQLDb::queryString($query);
+        $row = mysqli_fetch_assoc($result);
+        return $row;
+    }
+    public function updateTypPromitani($id_typu_promitani, $id_programu) {
+        $query = "UPDATE `program` SET `id_typu_promitani` = '$id_typu_promitani' WHERE `id_programu` = '$id_programu';";
+        $result = MySQLDb::queryString($query);
+        return $result;
+    }
+    public function updateSalu($id_salu, $id_programu) {
+        $query = "UPDATE `program` SET `id_salu` = '$id_salu' WHERE `id_programu` = '$id_programu';";
+        $result = MySQLDb::queryString($query);
+        return $result;
+    }
+    public function updateFilm($nazev_filmu, $id_programu) {
+        $query = "SELECT * FROM `filmy` WHERE `nazev_filmu` = '$nazev_filmu';";
+        $result = MySQLDb::queryString($query);
+        $row = mysqli_fetch_assoc($result);
+        $id_filmu = $row["id_filmu"];
+        $query2 = "UPDATE `program` SET `id_filmu` = '$id_filmu' WHERE `id_programu` = '$id_programu';";
+        $result2 = MySQLDb::queryString($query2);
+        return $result2;
+    }
+    public function updateDatumCas($datumcas, $id_programu) {
+        $query = "UPDATE `program` SET `datumcas` = '$datumcas' WHERE `id_programu` = '$id_programu';";
+        $result = MySQLDb::queryString($query);
+        return $result;
+    }
+    public function updateCena($cena, $id_programu) {
+        $query = "UPDATE `program` SET `cena` = '$cena' WHERE `id_programu` = '$id_programu';";
+        $result = MySQLDb::queryString($query);
+        return $result;
+    }
+    public function updatejazyk($jazyk, $id_programu) {
+        $query = "UPDATE `program` SET `jazyk` = '$jazyk' WHERE `id_programu` = '$id_programu';";
+        $result = MySQLDb::queryString($query);
+        return $result;
+    }
+    public function updateKonecPredprodeje($konec_predprodeje, $id_programu) {
+        $query = "UPDATE `program` SET `konec_predprodeje` = '$konec_predprodeje' WHERE `id_programu` = '$id_programu';";
+        $result = MySQLDb::queryString($query);
+        return $result;
+    }
 }

@@ -52,7 +52,7 @@
     ?>
     
     <form method="post">
-        <input type="hidden" name="id_user" value="<?php echo $row["id_zakaznika"]; ?>" />
+        <input type="hidden" name="id_zakaznika" value="<?php echo $row["id_zakaznika"]; ?>" />
         <label>role uživatele</label>
         <select type="text" name="id_role">
             <option value=" "> </option>
