@@ -97,31 +97,78 @@ class Model {
         }
         return TRUE;
     }
-    
+
     public static function getHall2($name_hall2) {
         $query = "SELECT * FROM `saly` WHERE `jmeno_salu` = '$name_hall2' LIMIT 1;";
         $result = MySQLDb::queryString($query);
         return $result;
     }
-    
+
     public static function getMovie($name_movie) {
         $query = "SELECT * FROM `filmy` WHERE `nazev_filmu` = '$name_movie' LIMIT 1;";
         $result = MySQLDb::queryString($query);
         return $result;
     }
-    
-    public static function insertProgram($treeD, $id_salu, $id_filmu, $datetime, $price, $language, $datetime2) {
-    $query = "insert into `program` values('', '$treeD', '$id_salu' ,'$id_filmu', '$datetime', '$price', '$language', '$datetime2');";
-    $result = MySQLDb::queryString($query);
-    if ($result->num_rows == 0) {
-            return FALSE;
+
+    public static function insertProgram($threeD, $id_salu, $id_filmu, $datetime, $price, $language, $datetime2) {
+        $query = "insert into `program` values('', '$threeD', '$id_salu' ,'$id_filmu', '$datetime', '$price', '$language', '$datetime2');";
+        $result = MySQLDb::queryString($query);
+            return $result;
         }
-        return TRUE;
-    }
-    
+
     public static function smazani($id_programu) {
         $query = "DELETE FROM `program` WHERE `id_programu` = '$id_programu' LIMIT 1;";
         $result = MySQLDb::queryString($query);
         return $result;
     }
+
+    public static function getAllUser() {
+        $query = "SELECT * FROM `zakaznici`";
+        $result = MySQLDb::queryString($query);
+        return $result;
+    }
+
+    public static function getUser($id_zakaznika) {
+        $query = "SELECT * FROM `zakaznici` WHERE `id_zakaznika` = '$id_zakaznika';";
+        $result = MySQLDb::queryString($query);
+        $row = mysqli_fetch_assoc($result);
+        return $row;
+    }
+
+    public static function updatePassword($email, $password, $id_zakaznika) {
+        $salt = "fafakwnfkangeajekgna";
+        $hash = md5($password . $salt . $email);
+        $query = "UPDATE `zakaznici` SET `heslo` = '$hash' WHERE `id_zakaznika` = '$id_zakaznika';";
+        $result = MySQLDb::queryString($query);
+        return $result;
+    }
+    
+    public static function updateName($jmeno, $id_zakaznika) {
+        $query = "UPDATE `zakaznici` SET `jmeno` = '$jmeno' WHERE `id_zakaznika` = '$id_zakaznika';";
+        $result = MySQLDb::queryString($query);
+        return $result;
+    }
+    public static function updatePrijmeni($prijmeni, $id_zakaznika) {
+        $query = "UPDATE `zakaznici` SET `prijmeni` = '$prijmeni' WHERE `id_zakaznika` = '$id_zakaznika';";
+        $result = MySQLDb::queryString($query);
+        return $result;
+    }
+    
+    public static function updateRole($id_role, $id_zakaznika) {
+        $query = "UPDATE `zakaznici` SET `id_role` = '$id_role' WHERE `id_zakaznika` = '$id_zakaznika';";
+        $result = MySQLDb::queryString($query);
+        return $result;
+    }
+    
+    public static function updateStatus($status_zakaznika, $id_zakaznika) {
+        $query = "UPDATE `zakaznici` SET `status_zakaznika` = '$status_zakaznika' WHERE `id_zakaznika` = '$id_zakaznika';";
+        $result = MySQLDb::queryString($query);
+        return $result;
+    }
+    public static function updateEmail($email, $id_zakaznika) {
+        $query = "UPDATE `zakaznici` SET `email` = '$email' WHERE `id_zakaznika` = '$id_zakaznika';";
+        $result = MySQLDb::queryString($query);
+        return $result;
+    }
+    
 }
