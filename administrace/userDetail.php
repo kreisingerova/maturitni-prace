@@ -42,7 +42,13 @@
     }
     
     $row = Model::getUser($id_zakaznika);
-    echo $row["id_zakaznika"] . " " . $row["id_role"] . " " . $row["status_zakaznika"] . " " . $row["email"] . " " . $row["jmeno"] . " " . $row["prijmeni"] . "<br><br>";
+    echo $row["id_zakaznika"] . " ";
+     if($row["id_role"] == 0){
+         echo 'Běžný uživatel';
+     } else {
+         echo 'administrátor';
+    }
+    echo  " " . $row["status_zakaznika"] . " " . $row["email"] . " " . $row["jmeno"] . " " . $row["prijmeni"] . "<br><br>";
     ?>
     
     <form method="post">
@@ -50,8 +56,8 @@
         <label>role uživatele</label>
         <select type="text" name="id_role">
             <option value=" "> </option>
-            <option value="0">0</option>
-            <option value="1">1</option>
+            <option value="0">Běžný uživatel </option>
+            <option value="1">Administrátor </option>
         </select>
         <br>
         <label>Status</label>
