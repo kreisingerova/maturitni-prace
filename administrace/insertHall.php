@@ -1,39 +1,41 @@
 <?php include 'header.php'; ?>
 <?php include 'menu.php'; ?>
 <section>
-<!-- když má někdo dostatečné oprávnění, zobrazí se mu formulář na přidání sálu a programu do databáze -->
-<?php if (@$_SESSION["id_role"] == "1") { ?>
-<h1>Sály</h1>
-<form method="post" action="insertHall.php">
-    <label>Jméno sálu</label>
-    <input type="text" name="name_hall" />
-    <br>
-    <label>druh</label>
-    <select type="text" name="type">
-        <option value="1">Malý</option>
-        <option value="2">Střední</option>
-        <option value="3">Velký</option>
-    </select>
-    <br>
-    <input name="submit_hall" type="submit" value="Odeslat"/>
-</form>
-<?php } ?>
-<?php include 'footer.php'; ?>
-<?php
-require_once 'autoloader.php';
-$submit_hall = filter_input(INPUT_POST, "submit_hall");
-//pokud je formulář na přidání sálu vyplněný a jméno sálu ještě není v databázi, tak se do ní údaje uloží
-if (isset($submit_hall)) {
-    $name_hall = filter_input(INPUT_POST, "name_hall");
-    $type = filter_input(INPUT_POST, "type");
-    
+    <!-- když má někdo dostatečné oprávnění, zobrazí se mu formulář na přidání sálu do databáze -->
+    <?php if (@$_SESSION["id_role"] == "1") { ?>
+        <h1>Sály</h1>
+        <form method="post" action="insertHall.php">
+            <label>Jméno sálu</label>
+            <input type="text" name="name_hall" />
+            <br>
+            <label>Počet řad</label>
+            <input type="int" name="rady" />
+            <br>
+            <label>Počet sloupců</label>
+            <input type="int" name="sloupce" />
+            <br>
+            <input name="submit_hall" type="submit" value="Odeslat"/>
+        </form>
+    <?php } ?>
+    <?php include 'footer.php'; ?>
+    <?php
+    require_once 'autoloader.php';
+    $submit_hall = filter_input(INPUT_POST, "submit_hall");
+//pokud je formulář na přidání sálu vyplněný uloží se údaje do proměnné 
+    if (isset($submit_hall)) {
+        $name_hall = filter_input(INPUT_POST, "name_hall");
+        $rady = filter_input(INPUT_POST, "rady");
+        $sloupce = filter_input(INPUT_POST, "sloupce");
+
+        //volá funkci pro kontrolu, zda sál není už v databázi
         $getHall = Model::getHall($name_hall);
         if ($getHall == NULL) {
-            $insertHall = Model::insertHall($name_hall, $type);
+            //volá funkci pro vložení údajů do databáze
+            $insertHall = Model::insertHall($name_hall, $rady, $sloupce);
             if ($insertHall == TRUE) {
                 echo 'Přidání sálu bylo úspěšné';
+                
             }
-        } else {
-            echo 'sál už je v databázi';
         }
-}
+        }
+        

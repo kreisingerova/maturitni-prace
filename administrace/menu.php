@@ -1,10 +1,7 @@
-<!-- když bude mít někdo dostatečná práva, zobrazí se mu odkaz na přidání programu a sálu do databáze -->
-<?php //if (@$_SESSION["id_role"] == "1") { ?>
-   <!-- <a href="insertion.php">Přidání programu a sálu</a> -->
-<?php //} ?>
 <header>
     <a href="index.php"><img src="banner1.jpg" /></a>
 </header>
+<!-- vytváří menu, které je ještě zabezpečeno, aby ho viděli jen ti, co mají dostatečná práva, ostatním se zobrazí pouze možnost přihlášení -->
 <div class="menu">
     <?php if (@$_SESSION["id_role"] == 1) { ?><button class="odkazy"><a href="insertHall.php">Přidání sálů do databáze</a></button>
     <button class="odkazy"><a href="insertFilm.php">Přidání filmů do databáze</a></button> 

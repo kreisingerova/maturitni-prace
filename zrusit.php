@@ -2,10 +2,12 @@
 <?php include 'menu.php'; ?>
 <section>
    <?php
+   //z url se načtou potřebné údaje
     $id_programu = filter_input(INPUT_GET, "id_programu");
     $id_sedacky = filter_input(INPUT_GET, "id_sedacky");
     $id_zakaznika = $_SESSION["id_zakaznika"];
     
+    //příkaz pro databázi pro úpravu údajů o sedačce
     $query11 = "UPDATE `sedacky_program` SET
                                 `id_status` = '1',
                                 `id_zakaznika` = '0'

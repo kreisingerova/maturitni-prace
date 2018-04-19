@@ -2,14 +2,15 @@
 <?php include 'menu.php'; ?>
 <section>
     <?php
+    //načítá to id programu z url adresy
     $id_programu = filter_input(INPUT_GET, "id_programu"); 
-    $promitani = Model::getProgram($id_programu);
-    
+    //volá funkci pro načtení sedaček u daného programu
     $getSedackyProgram = Model::getSedackyProgram($id_programu);
     $rada = 0;
     ?>
     <table border="1">
     <?php
+    //přiřazuje barvu jednotlivým sedačkám podle statusu
     while ($row7 = mysqli_fetch_assoc($getSedackyProgram)) {
         switch ($row7["id_status"]) {
             case 1;
@@ -22,12 +23,14 @@
                 $color = "red";
                 break;
         }
+            //vytváří řadu
         if ($rada != $row7["rada"]) {
             ?> <tr> <?php
             ?><td><?php echo "Řada" . $row7["rada"] . ": "; ?> </td><?php
             }
 
-
+            //vytváří jednotlivá pole, které znázorňují jednotlivé sedačky a po kliknutí na volnou sedačku to přesměruje uživatele na stránku, kde 
+            // si jí bude moct buď rezervovat nebo koupit, pokuď má na u tohoto programu rezervovanou nějakou sedačku, ukáže se mu možnost zrušení
             $rada = $row7["rada"];
             ?> <td style="background-color: <?php echo $color ?>;">
                 <?php if ($row7["id_status"] == 1) { ?>
@@ -47,13 +50,6 @@
                         ?> </tr> <?php
                      } } ?>
     </table>
-              <!--  <table>
-                    <tr><td><p>čas promítání</p></td> <td><?php // echo $row5["datumcas"]; ?></td></tr>
-                    <tr><td><p>Název filmů</p></td> <td><?php // echo $row5["nazev_filmu"]; ?></td></tr>
-                    <tr><td><p>číslo sálu</p></td> <td><?php // echo $row5["jmeno_salu"]; ?></td></tr>
-                    <tr><td><p>cena</p></td> <td><?php // echo $row5["cena"]; ?></td></tr>
-                    <tr><td><p>3D/2D</p></td> <td><?php // echo $row5["nazev"]; ?></td></tr>
-                </table> -->
     <?php 
     ?>
     </section>

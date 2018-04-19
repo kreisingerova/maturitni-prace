@@ -2,6 +2,7 @@
 
 class MySQLDb
 {
+    //vytváří konstantý pro připojení do databáze
     const DB_SERVER = 'localhost';
     const DB_NAME = 'mp';
     const DB_USER = 'root';
@@ -13,6 +14,7 @@ class MySQLDb
        
     }
     
+    //vytváří funkci připojení php do databáze
     public static function queryString($queryString) {
         $result = self::getInstance()->getConnection()->query($queryString);
         return $result;
@@ -26,7 +28,6 @@ class MySQLDb
             echo "Error: " . mysqli_connect_error();
             exit();
         }
-        //echo 'Connected to MySQL';
    
     }
     private static function getInstance(){

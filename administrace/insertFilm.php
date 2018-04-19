@@ -1,7 +1,7 @@
 <?php include 'header.php'; ?>
 <?php include 'menu.php'; ?>
 <section>
-<!-- když má někdo dostatečné oprávnění, zobrazí se mu formulář na přidání sálu a programu do databáze -->
+<!-- když má někdo dostatečné oprávnění, zobrazí se mu formulář na přidání filmu do databáze -->
 <?php if (@$_SESSION["id_role"] == "1") { ?>
 <h1>Filmy</h1>
 <form method="post" action="insertFilm.php">
@@ -21,6 +21,7 @@
 <?php } ?>
 <?php include 'footer.php'; ?>
 <?php
+//pokud je formulář vyplněný, uloží se jednotlivé údaje do databáze
 require_once 'autoloader.php';
 $submit_movie = filter_input(INPUT_POST, "submit_movie");
 
@@ -28,6 +29,7 @@ if (isset($submit_movie)) {
     $name_movie2 = filter_input(INPUT_POST, "name_movie2");
     $pristupnost = filter_input(INPUT_POST, "pristupnost");
  
+            //příkaz pro databázi k tomu, aby uložila jednotlivé informace
             $query13 = "insert into `filmy` values('', '$name_movie2', '$pristupnost');";
             $result13 = MySQLDb::queryString($query13);
             if ($result13) {

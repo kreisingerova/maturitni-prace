@@ -1,20 +1,21 @@
 <?php
 
 class Model {
-
+    //vytvoření soly, která se následně používá na zahešování hesla
     const SALT = "fafakwnfkangeajekgna";
 
+    //vyváří funkci, která vypíše údaje o programu z databáze
     public static function getProgram($id_programu = null) {
         $where = "";
         if (isset($id_programu)) {
             $where = "WHERE p.id_programu='$id_programu'";
         }
 
-        $query5 = "SELECT p.id_programu, p.datumcas, f.nazev_filmu, sa.jmeno_salu, p.cena, sa.druh_salu, tp.nazev
+        $query5 = "SELECT p.id_programu, p.datumcas, f.nazev_filmu, sa.jmeno_salu, p.cena, tp.nazev
     FROM program p
     JOIN filmy f ON p.id_filmu = f.id_filmu
     JOIN typy_promitani tp ON p.id_typu_promitani = tp.id_typu_promitani
-    JOIN saly sa ON p.id_salu = sa.id_salu
+    JOIN saly sa ON p.jmeno_salu = sa.jmeno_salu
     $where ;";
         $result5 = MySQLDb::queryString($query5);
         $program = array();
@@ -24,31 +25,7 @@ class Model {
         return $program;
     }
 
-    public static function updateSedacka($id_programu, $id_sedacky, $koupit, $id_zakaznika) {
-
-        $query9 = "UPDATE `sedacky_program` SET
-                                `id_status` = '$koupit',
-                                `id_zakaznika` = '$id_zakaznika'
-                                WHERE `id_sedacky` = '$id_sedacky' AND `id_promitani` = '$id_programu' LIMIT 1;";
-        $result9 = MySQLDB::queryString($query9);
-        return $result9;
-    }
-
-    public static function getEmail($email) {
-        $query = "SELECT * FROM `zakaznici` WHERE `email` = '$email' LIMIT 1;";
-        $result = MySQLDb::queryString($query);
-        if ($result->num_rows == 0) {
-            return FALSE;
-        }
-        return TRUE;
-    }
-
-    public static function registrace($email, $name, $second_name, $hash) {
-        $query2 = "insert into `zakaznici` values('', '0','registrovany', '', '$email', '$name', '$second_name' , '$hash');";
-        $result2 = MySQLDb::queryString($query2);
-        return $result2;
-    }
-
+    //vytváří funkci, která přihlásí uživatele tím, že zkontroluje zda se v databázi nachází email s tímto heslem a pak vypíše všechny informace
     public static function login($email, $password) {
         $hash = md5($password . self::SALT . $email);
         $query = "SELECT * FROM `zakaznici` WHERE `email` = '$email' AND `heslo` = '$hash' LIMIT 1;";
@@ -58,30 +35,7 @@ class Model {
         return $row;
     }
 
-    public static function getsedacky($id_programu, $id_sedacky) {
-        $query = "SELECT * FROM `program` p
-                          JOIN `filmy` f ON p.id_filmu = f.id_filmu
-                          JOIN `saly` s ON p.id_salu = s.id_salu
-                          JOIN `druhy_salu` d ON s.druh_salu = d.druh_salu
-                          JOIN `sedacky` sed ON s.id_salu = sed.id_salu
-                          WHERE p.id_programu=$id_programu AND id_sedacky=$id_sedacky
-                          ORDER BY rada, cislo_rada";
-        $result = MySQLDb::queryString($query);
-        return $result;
-    }
-
-    public static function getSedackyProgram($id_programu) {
-        $query = "SELECT * FROM `sedacky_program` sp
-                          JOIN `program` p ON sp.id_promitani = p.id_programu
-                          JOIN `status` s ON sp.id_status = s.id_status
-                          JOIN `sedacky` sed ON sp.id_sedacky = sed.id_sedacky
-                          WHERE p.id_programu=$id_programu
-                          ORDER BY rada, cislo_rada";
-        $result = MySQLDB::queryString($query);
-
-        return $result;
-    }
-
+    //vytváří funkci, která kontroluje zda už není daný sál v databázi 
     public static function getHall($name_hall) {
         $query = "SELECT * FROM `saly` WHERE `jmeno_salu` = '$name_hall' LIMIT 1;";
         $result = MySQLDb::queryString($query);
@@ -89,45 +43,42 @@ class Model {
         return $row;
     }
 
-    public static function insertHall($name_hall, $type) {
-        $query = "insert into `saly` values('', '$name_hall', '$type');";
-        $result = MySQLDb::queryString($query);
-        if ($result->num_rows == 0) {
-            return FALSE;
-        }
-        return TRUE;
-    }
-
-    public static function getHall2($name_hall2) {
-        $query = "SELECT * FROM `saly` WHERE `jmeno_salu` = '$name_hall2' LIMIT 1;";
+    //vytváří funkci, která vkládá jednotlivá data o sálu do databáze
+    public static function insertHall($name_hall, $rady, $sloupce) {
+        $query = "insert into `saly` values('$name_hall', '$rady', '$sloupce');";
         $result = MySQLDb::queryString($query);
         return $result;
     }
 
+    //vytváří funkci, která kontroluje zda je daný film v databázi
     public static function getMovie($name_movie) {
         $query = "SELECT * FROM `filmy` WHERE `nazev_filmu` = '$name_movie' LIMIT 1;";
         $result = MySQLDb::queryString($query);
         return $result;
     }
 
-    public static function insertProgram($threeD, $id_salu, $id_filmu, $datetime, $price, $language, $datetime2) {
-        $query = "insert into `program` values('', '$threeD', '$id_salu' ,'$id_filmu', '$datetime', '$price', '$language', '$datetime2');";
+    //vytváří funkci, která vkládá nový program do databáze
+    public static function insertProgram($threeD, $name_hall, $id_filmu, $datetime, $price, $language, $datetime2) {
+        $query = "insert into `program` values('', '$threeD', '$name_hall' ,'$id_filmu', '$datetime', '$price', '$language', '$datetime2');";
         $result = MySQLDb::queryString($query);
             return $result;
         }
 
+    //vytváří funkci, která program maže
     public static function smazani($id_programu) {
         $query = "DELETE FROM `program` WHERE `id_programu` = '$id_programu' LIMIT 1;";
         $result = MySQLDb::queryString($query);
         return $result;
     }
 
+    //vytváří funkci, která vypisuje všechny uživatele z databáze
     public static function getAllUser() {
         $query = "SELECT * FROM `zakaznici`";
         $result = MySQLDb::queryString($query);
         return $result;
     }
 
+    //vytváří funkci, která vypíše údaje o konkrétním uživateli
     public static function getUser($id_zakaznika) {
         $query = "SELECT * FROM `zakaznici` WHERE `id_zakaznika` = '$id_zakaznika';";
         $result = MySQLDb::queryString($query);
@@ -135,6 +86,7 @@ class Model {
         return $row;
     }
 
+    //vytváří funkci, která mění heslo konkrétnímu uživateli
     public static function updatePassword($email, $password, $id_zakaznika) {
         $salt = "fafakwnfkangeajekgna";
         $hash = md5($password . $salt . $email);
@@ -143,34 +95,42 @@ class Model {
         return $result;
     }
     
+    //vytváří funkci, která mění jméno konkrétnímu uživateli
     public static function updateName($jmeno, $id_zakaznika) {
         $query = "UPDATE `zakaznici` SET `jmeno` = '$jmeno' WHERE `id_zakaznika` = '$id_zakaznika';";
         $result = MySQLDb::queryString($query);
         return $result;
     }
+    
+    //vytváří funkci, která mění příjmení konkrétnímu uživateli
     public static function updatePrijmeni($prijmeni, $id_zakaznika) {
         $query = "UPDATE `zakaznici` SET `prijmeni` = '$prijmeni' WHERE `id_zakaznika` = '$id_zakaznika';";
         $result = MySQLDb::queryString($query);
         return $result;
     }
     
+    //vytváří funkci, která mění roli konkrétnímu uživateli
     public static function updateRole($id_role, $id_zakaznika) {
         $query = "UPDATE `zakaznici` SET `id_role` = '$id_role' WHERE `id_zakaznika` = '$id_zakaznika';";
         $result = MySQLDb::queryString($query);
         return $result;
     }
     
+    //vytváří funkci, která mění status konkrétnímu uživateli
     public static function updateStatus($status_zakaznika, $id_zakaznika) {
         $query = "UPDATE `zakaznici` SET `status_zakaznika` = '$status_zakaznika' WHERE `id_zakaznika` = '$id_zakaznika';";
         $result = MySQLDb::queryString($query);
         return $result;
     }
+    
+    //vytváří funkci, která mění email konkrétnímu uživateli
     public static function updateEmail($email, $id_zakaznika) {
         $query = "UPDATE `zakaznici` SET `email` = '$email' WHERE `id_zakaznika` = '$id_zakaznika';";
         $result = MySQLDb::queryString($query);
         return $result;
     }
     
+    //vytváří funkci, která vypisuje údaje o konkrétním programu
     public function getProgramU($id_programu) {
         $query = "SELECT * FROM `program` WHERE `id_programu` = '$id_programu';";
         $result = MySQLDb::queryString($query);
@@ -178,22 +138,29 @@ class Model {
         return $row;
     }
     
+    //vytváří funkci, která vypisuje údaje o konkrétním filmu
     public function getFilm($id_filmu) {
         $query = "SELECT * FROM `filmy` WHERE `id_filmu` = '$id_filmu';";
         $result = MySQLDb::queryString($query);
         $row = mysqli_fetch_assoc($result);
         return $row;
     }
+    
+    //vytváří funkci, která mění typ promítání (jestli je 2D nebo 3D
     public function updateTypPromitani($id_typu_promitani, $id_programu) {
         $query = "UPDATE `program` SET `id_typu_promitani` = '$id_typu_promitani' WHERE `id_programu` = '$id_programu';";
         $result = MySQLDb::queryString($query);
         return $result;
     }
-    public function updateSalu($id_salu, $id_programu) {
-        $query = "UPDATE `program` SET `id_salu` = '$id_salu' WHERE `id_programu` = '$id_programu';";
+    
+    //vytváří funkci, která mění jméno sálu u programu
+    public function updateSalu($jmeno_salu, $id_programu) {
+        $query = "UPDATE `program` SET `jmeno_salu` = '$jmeno_salu' WHERE `id_programu` = '$id_programu';";
         $result = MySQLDb::queryString($query);
         return $result;
     }
+    
+    //vytváří funkci, která mění film u konkrétního programu
     public function updateFilm($nazev_filmu, $id_programu) {
         $query = "SELECT * FROM `filmy` WHERE `nazev_filmu` = '$nazev_filmu';";
         $result = MySQLDb::queryString($query);
@@ -203,21 +170,29 @@ class Model {
         $result2 = MySQLDb::queryString($query2);
         return $result2;
     }
+    
+    //vytváří funkci, která mění čas promítaní u programu
     public function updateDatumCas($datumcas, $id_programu) {
         $query = "UPDATE `program` SET `datumcas` = '$datumcas' WHERE `id_programu` = '$id_programu';";
         $result = MySQLDb::queryString($query);
         return $result;
     }
+    
+    //vytváří funkci, která mění cenu u programu
     public function updateCena($cena, $id_programu) {
         $query = "UPDATE `program` SET `cena` = '$cena' WHERE `id_programu` = '$id_programu';";
         $result = MySQLDb::queryString($query);
         return $result;
     }
+    
+    //vytváří funkci, která mění jazyk u programu
     public function updatejazyk($jazyk, $id_programu) {
         $query = "UPDATE `program` SET `jazyk` = '$jazyk' WHERE `id_programu` = '$id_programu';";
         $result = MySQLDb::queryString($query);
         return $result;
     }
+    
+    //vytváří funkci, která mění čas konce předprodeje u programu
     public function updateKonecPredprodeje($konec_predprodeje, $id_programu) {
         $query = "UPDATE `program` SET `konec_predprodeje` = '$konec_predprodeje' WHERE `id_programu` = '$id_programu';";
         $result = MySQLDb::queryString($query);
