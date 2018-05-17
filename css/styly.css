@@ -38,18 +38,55 @@ section{
     position: relative;
     margin: auto;
     width: 89.15%;
+    //height: 450px;
     padding:5px;
-    text-align: center;
     color: white;
-    /* padding:0px;
-     margin-top:0px;
-     padding-top:0px;       */
+}
+table{
+    text-align: center;
+    position: relative;
+    margin: auto;
+    border: 5px black solid;
+}
+td{
+    text-align: center;
+    border: 1px black solid;
+    padding: 10px;
+}
+#sedacky{
+    text-align: center;
+    font-size: 20px;
+}
+hr{
+    color: gray;
+    width: 500px;
+    margin: auto;
+    position: relative;
+}
+#leva{
+    width: 50%;
+    float: left;
+    padding: 20px;
+    position: relative;
+}
+#prava{
+    width: 40%; 
+    position: relative;
+    padding: 20px;
+    float:right;
+}
+.clear{
+    clear: both;
+}
+iframe{
+    width:440px; 
+    height: 260px;
+    position: relative;
 }
 footer{
     background-color:black;
     position: relative;
     width:90%;
-    /*height:1%; */
     text-align:center;
     color:white;
     margin:auto;
@@ -111,59 +148,6 @@ h2{
     text-align: center;
     text-indent: 0px;
 }
-.galerie{
-    text-align: center;
-}
 
 
-ul li a {
- display:block;
- width: 200px;
- line-height:25px;
- border: solid 1px black;
- text-align:center;
- text-decoration:none;  
- color:black;    
- font-weight:bold; 
-}
 
-ul li a:hover {
- background-color:rgb(204,255,153);        
-}
-
-ul li {
- list-style-type:none;
- position:relative;    
-}
-
-ul {
- padding: 0px;
- display:block;
-}
-
-ul li ul {
-  display:none;
-}
-
-ul li:hover {
-  background-color:rgb(204,255,153);
-}
-ul.fly li ul {
-  position:absolute;
-  margin-left:199px;
-  top:0px;
-}
-ul.fly li:hover ul {
-  display:block;
-}
-ul.fly {
-  width:200px;
-  position:relative; 
-}
-
-ul.fly li ul li ul, ul.fly li:hover ul li ul {
-  display:none;
-}
-ul.fly li:hover ul li:hover ul {
-  display: block;
-}

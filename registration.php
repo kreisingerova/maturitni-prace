@@ -2,6 +2,7 @@
 <?php include 'menu.php'; ?>
 <!-- formulář pro registraci -->
 <section>
+    <div id="sedacky">
 <h1>Registrace</h1>
 <br>
 <form method="post" action="registration.php">
@@ -22,6 +23,7 @@
     <br>
     <input id="tlacitko" name="submit" type="submit" value="Registrovat"/>
 </form>
+    </div>
 </section>
 <?php include 'footer.php'; ?>
 <?php

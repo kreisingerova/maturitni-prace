@@ -4,18 +4,13 @@ class Model {
     //vytvoření soly, která se následně používá na zahešování hesla
     const SALT = "fafakwnfkangeajekgna";
     //vyváří funkci, která vypíše údaje o programu z databáze
-    public static function getProgram($id_programu = null) {
-        $where = "";
-        if (isset($id_programu)) {
-            $where = "WHERE p.id_programu='$id_programu'";
-        }
-
+    public static function getProgram() {
         $query5 = "SELECT p.id_programu, p.datumcas, p.konec_predprodeje, f.nazev_filmu, sa.jmeno_salu, p.cena, tp.nazev
     FROM program p
     JOIN filmy f ON p.id_filmu = f.id_filmu
     JOIN typy_promitani tp ON p.id_typu_promitani = tp.id_typu_promitani
-    JOIN saly sa ON p.jmeno_salu = sa.jmeno_salu
-    $where ;";
+    JOIN saly sa ON p.jmeno_salu = sa.jmeno_salu 
+    ORDER BY id_programu;";
         $result5 = MySQLDb::queryString($query5);
         $program = array();
         while ($row5 = mysqli_fetch_assoc($result5)) {
@@ -67,7 +62,7 @@ class Model {
         $query = "SELECT * FROM `program` p
                           JOIN `filmy` f ON p.id_filmu = f.id_filmu
                           JOIN `saly` s ON p.jmeno_salu = s.jmeno_salu
-                          JOIN `sedacky_program` sed ON p.id_programu = sed.id_programu
+                          JOIN `sedacky_program` sed ON p.id_programu = sed.id_promitani
                           WHERE p.id_programu=$id_programu AND sed.id_sedacky=$id_sedacky
                           ORDER BY rada, cislo_rada";
         $result = MySQLDb::queryString($query);

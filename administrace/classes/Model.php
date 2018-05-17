@@ -5,18 +5,13 @@ class Model {
     const SALT = "fafakwnfkangeajekgna";
 
     //vyváří funkci, která vypíše údaje o programu z databáze
-    public static function getProgram($id_programu = null) {
-        $where = "";
-        if (isset($id_programu)) {
-            $where = "WHERE p.id_programu='$id_programu'";
-        }
-
+    public static function getProgram() {
         $query5 = "SELECT p.id_programu, p.datumcas, f.nazev_filmu, sa.jmeno_salu, p.cena, tp.nazev
     FROM program p
     JOIN filmy f ON p.id_filmu = f.id_filmu
     JOIN typy_promitani tp ON p.id_typu_promitani = tp.id_typu_promitani
     JOIN saly sa ON p.jmeno_salu = sa.jmeno_salu
-    $where ;";
+    ORDER BY id_programu;";
         $result5 = MySQLDb::queryString($query5);
         $program = array();
         while ($row5 = mysqli_fetch_assoc($result5)) {
@@ -63,13 +58,6 @@ class Model {
         $result = MySQLDb::queryString($query);
             return $result;
         }
-
-    //vytváří funkci, která program maže
-    public static function smazani($id_programu) {
-        $query = "DELETE FROM `program` WHERE `id_programu` = '$id_programu' LIMIT 1;";
-        $result = MySQLDb::queryString($query);
-        return $result;
-    }
 
     //vytváří funkci, která vypisuje všechny uživatele z databáze
     public static function getAllUser() {

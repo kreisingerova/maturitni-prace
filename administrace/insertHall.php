@@ -17,6 +17,7 @@
             <input name="submit_hall" type="submit" value="Odeslat"/>
         </form>
     <?php } ?>
+</section>
     <?php include 'footer.php'; ?>
     <?php
     require_once 'autoloader.php';

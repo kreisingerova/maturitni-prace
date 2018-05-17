@@ -1,12 +1,14 @@
 <?php include 'header.php'; ?>
 <?php include 'menu.php'; ?>
 <section>
+    <div id="sedacky">
     <h1>Objednat sedačku</h1>
+    <hr>
+    <br>
     <?php
     // z url adresy se načtou potřebné údaje
     $id_programu = filter_input(INPUT_GET, "id_programu");
     $id_sedacky = filter_input(INPUT_GET, "id_sedacky");
-    
     //zavolá se funkce pro detail o sedačce
     $getSedacky = Model::getsedacky($id_programu, $id_sedacky);
     while ($row8 = mysqli_fetch_assoc($getSedacky)) {
@@ -19,5 +21,6 @@
     <a href="provestObjednavku.php?id_programu=<?php echo $id_programu ?>&id_sedacky=<?php echo $id_sedacky ?>&koupit=2">Rezervovat</a>
     <br>
     <a href="provestObjednavku.php?id_programu=<?php echo $id_programu ?>&id_sedacky=<?php echo $id_sedacky ?>&koupit=3">Koupit</a>
+    </div>
 </section>
 <?php include 'footer.php'; ?>

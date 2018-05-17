@@ -34,6 +34,8 @@
         </form>
 
     <?php } ?>
+</section>
+    <?php include 'footer.php'; ?>
     <?php
     require_once 'autoloader.php';
     $submit_program = filter_input(INPUT_POST, "submit_program");
@@ -90,5 +92,4 @@
             echo 'Přidání programu nebylo úspěšné';
         }
     }
-    include 'footer.php';
     ?>
